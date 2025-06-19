@@ -1,0 +1,70 @@
+// 应用 maven-publish 插件
+plugins {
+    id 'maven-publish'
+}
+
+// 避免 Gradle 报错：无需定义 build 任务，因为我们不编译代码
+// Gradle 会自动跳过构建，直接处理 publishing
+
+// 定义 source JAR 任务，直接引用预编译的 sources.jar
+task sourcesJar(type: Jar) {
+    classifier = 'sources'
+    from file('core-sdk-3.8.3-patch7-sources.jar') // 直接使用文件，而不是 zipTree
+}
+
+publishing {
+    publications {
+        release(MavenPublication) {
+            groupId = 'io.openim'
+            artifactId = 'core-sdk'
+            version = '3.8.3-patch7'
+
+            // 发布主 AAR 文件
+            artifact(file('build/core-sdk-3.8.3-patch7.aar'))
+
+            // 发布预编译的 sources JAR 文件
+            artifact(file('build/core-sdk-3.8.3-patch7-sources.jar')) {
+                classifier = 'sources'
+            }
+
+            // 配置 POM 文件（可选，如果没有依赖可以留空）
+            pom {
+                name = 'OpenIM SDK Core'
+                description = 'OpenIM SDK Core for Android'
+                url = 'https://github.com/wood911/openim-sdk-core-ios'
+
+                licenses {
+                    license {
+                        name = 'MIT License'
+                        url = 'https://opensource.org/licenses/MIT'
+                    }
+                }
+
+                developers {
+                    developer {
+                        id = 'wood911'
+                        name = 'wood'
+                        email = 'wood1024@qq.com'
+                    }
+                }
+
+                scm {
+                    connection = 'scm:git:git://github.com/wood911/openim-sdk-core-ios.git'
+                    developerConnection = 'scm:git:git@github.com:wood911/openim-sdk-core-ios.git'
+                    url = 'https://github.com/wood911/openim-sdk-core-ios'
+                }
+            }
+        }
+    }
+
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/wood911/openim-sdk-core-ios")
+            credentials {
+                username = project.findProperty("gpr.user") ?: System.getenv("GITHUB_USER")
+                password = project.findProperty("gpr.key") ?: System.getenv("GITHUB_TOKEN")
+            }
+        }
+    }
+}

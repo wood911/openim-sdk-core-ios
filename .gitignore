@@ -1,0 +1,34 @@
+.DS_Store
+.idea
+*.iml
+
+# Flutter/Dart specific
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+pubspec.lock
+build
+
+# Android specific
+# Build generated files
+/android/.gradle/
+/android/app/build/
+/android/build/
+/android/gradle/
+/android/gradle-wrapper.jar
+
+# iOS specific
+# Build generated files
+/ios/Pods/
+/ios/Runner.xcworkspace/
+/ios/Flutter/.symlinks/
+/ios/Flutter/Flutter.framework
+/ios/Flutter/Flutter.podspec
+/ios/Runner/GeneratedPluginRegistrant.*
+
+# VS Code settings (optional, only if using VS Code)
+.vscode/
+
+# Xcode specific (additional to
+
